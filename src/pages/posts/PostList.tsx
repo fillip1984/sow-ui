@@ -3,6 +3,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { readAllPosts } from "../../services/PostService";
 
+import { FiFilePlus, FiRefreshCw } from "react-icons/fi";
+import PostCard from "./PostCard";
+import { Post } from "../../Types";
+
 const PostList = () => {
   const [search, setSearch] = useState("");
 
@@ -18,13 +22,15 @@ const PostList = () => {
       <div className="toolbar flex gap-2 bg-emerald-500 p-2">
         <button
           type="button"
-          className="bg-emerald-400 p-4 text-white"
+          className="bg-emerald-400 p-4 text-2xl text-white"
           onClick={() => refetch()}>
-          Refresh
+          <FiRefreshCw />
         </button>
         <Link to="/posts/new">
-          <button type="button" className="bg-emerald-400 p-4 text-white">
-            Add
+          <button
+            type="button"
+            className="bg-emerald-400 p-4 text-2xl text-white">
+            <FiFilePlus />
           </button>
         </Link>
         <input
@@ -33,6 +39,12 @@ const PostList = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+      </div>
+
+      <div>
+        {posts?.map((post) => (
+          <PostCard post={post} key={post.id} />
+        ))}
       </div>
 
       {!isLoading && !isError && posts.length === 0 && (

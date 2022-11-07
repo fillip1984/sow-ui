@@ -4,6 +4,27 @@
 
 @layer base {
   body {
-    @apply bg-emerald-700;
+    @apply bg-emerald-800 text-white;
+  }
+
+  h1 {
+    @apply text-8xl;
+  }
+
+  h2 {
+    @apply text-6xl;
+  }
+
+  h3 {
+    @apply text-4xl;
+  }
+
+  h4 {
+    @apply text-2xl;
+  }
+
+  input[type="text"],
+  textarea {
+    @apply bg-emerald-600;
   }
 }

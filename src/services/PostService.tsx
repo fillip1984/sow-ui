@@ -32,7 +32,7 @@ export const createPost = async (post: Post): Promise<Post> => {
   }
 };
 
-export const readAllPosts = async () => {
+export const readAllPosts = async (): Promise<Post[]> => {
   try {
     const response = await fetch(`${POST_API_URL}`, {
       method: "GET",
