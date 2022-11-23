@@ -13,4 +13,10 @@
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L78) | 78 | repetitive |
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L104) | 104 | repetitive |
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L129) | 129 | repetitive |
-| [./src/pages/posts/PostDetail.tsx](./src/pages/posts/PostDetail.tsx#L19) | 19 | pull from context |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L4) | 4 | replace with user principal |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L31) | 31 | repetitive? |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L56) | 56 | repetitive |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L80) | 80 | repetitive |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L108) | 108 | repetitive |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L133) | 133 | repetitive |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L19) | 19 | pull from context |

@@ -2,22 +2,22 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { readAllAuthors, readAuthorById } from "../../services/AuthorService";
+import { readAllAuthors } from "../../services/AuthorService";
 import {
   createPost,
   readPostById,
   updatePost,
 } from "../../services/PostService";
-import { Author, Post } from "../../Types";
+import { AuthorSummary, PostDetail } from "../../Types";
 
-const PostDetail = () => {
+const PostDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isNew = id && id === "new";
   const queryClient = useQueryClient();
 
   //TODO: pull from context
-  const [author, setAuthor] = useState<Author | null>(null);
+  const [author, setAuthor] = useState<AuthorSummary | null>(null);
 
   useEffect(() => {
     const fetchAuthor = async () => {
@@ -29,7 +29,7 @@ const PostDetail = () => {
         firstName: author.firstName,
         lastName: author.lastName,
         bio: author.bio,
-      } as Author;
+      } as AuthorSummary;
       setAuthor(actualAuthor);
     };
     fetchAuthor().catch((e) =>
@@ -52,18 +52,20 @@ const PostDetail = () => {
         shortDescription: "",
         contents: "",
         author: author,
-      } as Post;
+      } as PostDetail;
     }
   });
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
 
+  const { data: topics } = useQuery(["topics"], () => readTopics);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Post>();
-  const onSubmit: SubmitHandler<Post> = (formData) => {
+  } = useForm<PostDetail>();
+  const onSubmit: SubmitHandler<PostDetail> = (formData) => {
     if (isNew) {
       createPostMutator(
         { ...formData, author: author! },
@@ -137,6 +139,17 @@ const PostDetail = () => {
                   {errors.title.message}
                 </span>
               )}
+            </div>
+
+            <div>
+              <label htmlFor="topic" className="text-2xl">
+                Topic
+              </label>
+              <select className="w-full rounded">
+                {topics.map((topic) => (
+                  <option value={topic.id}>{topic.name}</option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -217,4 +230,4 @@ const PostDetail = () => {
   );
 };
 
-export default PostDetail;
+export default PostDetailPage;

@@ -1,4 +1,4 @@
-import { Post } from "../Types";
+import { PostDetail, PostSummary } from "../Types";
 
 const POST_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/posts`;
 // TODO: replace with user principal
@@ -6,7 +6,7 @@ const username = "admin";
 const password = "admin";
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
-export const createPost = async (post: Post): Promise<Post> => {
+export const createPost = async (post: PostDetail): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}`, {
       method: "POST",
@@ -32,9 +32,9 @@ export const createPost = async (post: Post): Promise<Post> => {
   }
 };
 
-export const readAllPosts = async (): Promise<Post[]> => {
+export const readAllPosts = async (): Promise<PostSummary[]> => {
   try {
-    const response = await fetch(`${POST_API_URL}`, {
+    const response = await fetch(`${POST_API_URL}/summaries`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const readAllPosts = async (): Promise<Post[]> => {
   }
 };
 
-export const readPostById = async (id: number): Promise<Post> => {
+export const readPostById = async (id: number): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}/${id}`, {
       headers: {
@@ -81,7 +81,7 @@ export const readPostById = async (id: number): Promise<Post> => {
   }
 };
 
-export const updatePost = async (post: Post): Promise<Post> => {
+export const updatePost = async (post: PostDetail): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}/${post.id}`, {
       method: "PUT",

@@ -5,17 +5,17 @@ import { readAllPosts } from "../../services/PostService";
 
 import { FiFilePlus, FiRefreshCw } from "react-icons/fi";
 import PostCard from "./PostCard";
-import { Post } from "../../Types";
+import { PostSummary } from "../../Types";
 
 const PostList = () => {
   const [search, setSearch] = useState("");
 
   const {
-    data: posts,
+    data: postSummaries,
     isError,
     isLoading,
     refetch,
-  } = useQuery(["posts"], readAllPosts);
+  } = useQuery(["postSummaries"], readAllPosts);
 
   return (
     <div>
@@ -42,12 +42,12 @@ const PostList = () => {
       </div>
 
       <div>
-        {posts?.map((post) => (
-          <PostCard post={post} key={post.id} />
+        {postSummaries?.map((postSummary) => (
+          <PostCard postSummary={postSummary} key={postSummary.id} />
         ))}
       </div>
 
-      {!isLoading && !isError && posts.length === 0 && (
+      {!isLoading && !isError && postSummaries.length === 0 && (
         <div>There are no posts</div>
       )}
       {isLoading && (
