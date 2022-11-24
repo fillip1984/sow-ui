@@ -1,4 +1,4 @@
-import { Author } from "../Types";
+import { AuthorDetail, AuthorSummary } from "../Types";
 
 const AUTHOR_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/authors`;
 // TODO: replace with user principal
@@ -6,7 +6,9 @@ const username = "admin";
 const password = "admin";
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
-export const createAuthor = async (author: Author): Promise<Author> => {
+export const createAuthor = async (
+  author: AuthorDetail
+): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}`, {
       method: "POST",
@@ -32,7 +34,7 @@ export const createAuthor = async (author: Author): Promise<Author> => {
   }
 };
 
-export const readAllAuthors = async () => {
+export const readAllAuthors = async (): Promise<AuthorSummary[]> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}`, {
       method: "GET",
@@ -57,7 +59,7 @@ export const readAllAuthors = async () => {
   }
 };
 
-export const readAuthorById = async (id: number): Promise<Author> => {
+export const readAuthorById = async (id: number): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}/${id}`, {
       headers: {
@@ -81,7 +83,9 @@ export const readAuthorById = async (id: number): Promise<Author> => {
   }
 };
 
-export const updateAuthor = async (author: Author): Promise<Author> => {
+export const updateAuthor = async (
+  author: AuthorDetail
+): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}/${author.id}`, {
       method: "PUT",

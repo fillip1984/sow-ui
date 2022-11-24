@@ -20,3 +20,4 @@
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L106) | 106 | repetitive |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L131) | 131 | repetitive |
 | [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L20) | 20 | pull from context |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L177) | 177 | for some reason this field doesn't display |

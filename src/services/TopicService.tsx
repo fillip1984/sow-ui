@@ -1,4 +1,4 @@
-import { TopicDetail, TopicFull, TopicSummary } from "../Types";
+import { TopicDetail, TopicSummary } from "../Types";
 
 const TOPIC_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/topics`;
 // TODO: replace with user principal
@@ -59,7 +59,7 @@ export const readAllTopics = async (): Promise<TopicSummary[]> => {
   }
 };
 
-export const readTopicById = async (id: number): Promise<TopicFull> => {
+export const readTopicById = async (id: number): Promise<TopicDetail> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}/${id}`, {
       headers: {
@@ -83,7 +83,7 @@ export const readTopicById = async (id: number): Promise<TopicFull> => {
   }
 };
 
-export const updateTopic = async (topic: TopicFull): Promise<TopicFull> => {
+export const updateTopic = async (topic: TopicDetail): Promise<TopicDetail> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}/${topic.id}`, {
       method: "PUT",

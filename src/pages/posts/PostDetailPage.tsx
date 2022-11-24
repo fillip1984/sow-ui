@@ -90,7 +90,7 @@ const PostDetailPage = () => {
       updatePostMutator(
         {
           ...formData,
-          id: Number(id),
+          // id: Number(id),
         },
         {
           onSuccess: () => {
