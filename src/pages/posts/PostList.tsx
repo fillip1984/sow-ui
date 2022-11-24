@@ -5,6 +5,7 @@ import { readAllPosts } from "../../services/PostService";
 
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
 import PostCard from "./PostCard";
+import { DebounceInput } from "react-debounce-input";
 
 const PostList = () => {
   const [search, setSearch] = useState("");
@@ -42,9 +43,11 @@ const PostList = () => {
         </div>
         <div className="flex w-2/3 items-center gap-2">
           <FiSearch className="h-full" />
-          <input
+          <DebounceInput
             className="h-full flex-1 bg-emerald-400 p-2 placeholder-emerald-200"
             placeholder="find a post"
+            minLength={2}
+            debounceTimeout={300}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

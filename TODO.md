@@ -17,6 +17,6 @@
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L31) | 31 | repetitive? |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L56) | 56 | repetitive |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L80) | 80 | repetitive |
-| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L108) | 108 | repetitive |
-| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L133) | 133 | repetitive |
-| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L19) | 19 | pull from context |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L106) | 106 | repetitive |
+| [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L131) | 131 | repetitive |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L20) | 20 | pull from context |
