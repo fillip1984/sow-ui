@@ -19,8 +19,6 @@ const PostDetailPage = () => {
 
   //TODO: pull from context
   const [author, setAuthor] = useState<AuthorSummary | null>(null);
-  // const [topics, setTopics] = useState<TopicSummary[] | null>(null);
-
   useEffect(() => {
     const fetchAuthor = async () => {
       const authors = await readAllAuthors();
@@ -62,17 +60,18 @@ const PostDetailPage = () => {
 
   const {
     data: topics,
-    // isLoading: isTopicsLoading,
-    // isError: isTopicsError,
+    isLoading: isTopicsLoading,
+    isError: isTopicsError,
+    refetch: topicRefetch,
   } = useQuery(["topics"], readAllTopics);
-
-  // const { data: topics } = useQuery(["topics"], () => readTopics);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PostDetail>();
+  } = useForm<PostDetail>({
+    defaultValues: post,
+  });
   const onSubmit: SubmitHandler<PostDetail> = (formData) => {
     if (isNew) {
       createPostMutator(
@@ -119,7 +118,7 @@ const PostDetailPage = () => {
         </Link>
       </div>
 
-      {!isLoading && !isError && (
+      {!isLoading && !isError && !isTopicsLoading && !isTopicsError && (
         <div className="p-4">
           <form
             className="flex flex-col gap-4"
@@ -145,7 +144,7 @@ const PostDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                defaultValue={post?.title}
+                // defaultValue={post?.title}
                 autoFocus
               />
               {errors.title && (
@@ -161,10 +160,12 @@ const PostDetailPage = () => {
               </label>
               <select
                 className="w-full rounded"
-                {...register("topic", {
+                {...register("topic.id", {
                   required: "Field is required",
-                  setValueAs: (v) =>
-                    topics?.find((topic) => topic.id === Number(v)),
+                  valueAsNumber: true,
+                  // ended up being able to convert id to number and store as topic.id
+                  // setValueAs: (v) =>
+                  //   topics?.find((topic) => topic.id === Number(v)),
                 })}>
                 <option value="">Choose a topic...</option>
                 {topics?.map((topic) => (
@@ -195,11 +196,11 @@ const PostDetailPage = () => {
                     message: "Field must be at least 10 characters",
                   },
                   maxLength: {
-                    value: 100,
+                    value: 250,
                     message: "Field must be 250 characters or less",
                   },
                 })}
-                defaultValue={post?.shortDescription}
+                // defaultValue={post?.shortDescription}
               />
               {errors.shortDescription && (
                 <span className="font-bold text-emerald-900">
@@ -239,17 +240,20 @@ const PostDetailPage = () => {
         </div>
       )}
 
-      {isLoading && (
+      {isLoading && isTopicsLoading && (
         <div className="loading -m-32 flex h-screen flex-col items-center justify-center text-4xl">
           Loading...
         </div>
       )}
-      {isError && (
+      {(isError || isTopicsError) && (
         <div className="error -m-32 flex h-screen flex-col items-center justify-center text-4xl">
           Error
           <button
             className="rounded bg-slate-400 p-4 text-white"
-            onClick={() => refetch()}>
+            onClick={() => {
+              refetch();
+              topicRefetch();
+            }}>
             Retry
           </button>
         </div>
