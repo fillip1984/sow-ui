@@ -8,6 +8,7 @@ import {
   readPostById,
   updatePost,
 } from "../../services/PostService";
+import { readAllTopics } from "../../services/TopicService";
 import { AuthorSummary, PostDetail } from "../../Types";
 
 const PostDetailPage = () => {
@@ -18,6 +19,7 @@ const PostDetailPage = () => {
 
   //TODO: pull from context
   const [author, setAuthor] = useState<AuthorSummary | null>(null);
+  // const [topics, setTopics] = useState<TopicSummary[] | null>(null);
 
   useEffect(() => {
     const fetchAuthor = async () => {
@@ -58,7 +60,13 @@ const PostDetailPage = () => {
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
 
-  const { data: topics } = useQuery(["topics"], () => readTopics);
+  const {
+    data: topics,
+    // isLoading: isTopicsLoading,
+    // isError: isTopicsError,
+  } = useQuery(["topics"], readAllTopics);
+
+  // const { data: topics } = useQuery(["topics"], () => readTopics);
 
   const {
     register,
@@ -68,7 +76,10 @@ const PostDetailPage = () => {
   const onSubmit: SubmitHandler<PostDetail> = (formData) => {
     if (isNew) {
       createPostMutator(
-        { ...formData, author: author! },
+        {
+          ...formData,
+          author: author!,
+        },
         {
           onSuccess: () => {
             queryClient.invalidateQueries(["posts"]);
@@ -78,7 +89,10 @@ const PostDetailPage = () => {
       );
     } else {
       updatePostMutator(
-        { ...formData, id: Number(id) },
+        {
+          ...formData,
+          id: Number(id),
+        },
         {
           onSuccess: () => {
             queryClient.invalidateQueries(["posts"]);
@@ -145,11 +159,25 @@ const PostDetailPage = () => {
               <label htmlFor="topic" className="text-2xl">
                 Topic
               </label>
-              <select className="w-full rounded">
-                {topics.map((topic) => (
-                  <option value={topic.id}>{topic.name}</option>
+              <select
+                className="w-full rounded"
+                {...register("topic", {
+                  required: "Field is required",
+                  setValueAs: (v) =>
+                    topics?.find((topic) => topic.id === Number(v)),
+                })}>
+                <option value="">Choose a topic...</option>
+                {topics?.map((topic) => (
+                  <option key={topic.id} value={topic.id}>
+                    {topic.name}
+                  </option>
                 ))}
               </select>
+              {errors.topic && (
+                <span className="font-bold text-emerald-900">
+                  {errors.topic.message}
+                </span>
+              )}
             </div>
 
             <div>

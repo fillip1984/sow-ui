@@ -1,44 +1,54 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { readAllPosts } from "../../services/PostService";
 
-import { FiFilePlus, FiRefreshCw } from "react-icons/fi";
+import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
 import PostCard from "./PostCard";
-import { PostSummary } from "../../Types";
 
 const PostList = () => {
   const [search, setSearch] = useState("");
+
+  const getQ = () => {
+    return search;
+  };
 
   const {
     data: postSummaries,
     isError,
     isLoading,
     refetch,
-  } = useQuery(["postSummaries"], readAllPosts);
+  } = useQuery(["postSummaries"], () => readAllPosts(getQ()));
+
+  useEffect(() => {
+    refetch();
+  }, [search]);
 
   return (
     <div>
-      <div className="toolbar flex gap-2 bg-emerald-500 p-2">
-        <button
-          type="button"
-          className="bg-emerald-400 p-4 text-2xl text-white"
-          onClick={() => refetch()}>
-          <FiRefreshCw />
-        </button>
-        <Link to="/posts/new">
+      <div className="toolbar flex justify-between bg-emerald-500 p-2 text-2xl">
+        <div className="flex gap-2">
           <button
             type="button"
-            className="bg-emerald-400 p-4 text-2xl text-white">
-            <FiFilePlus />
+            className="bg-emerald-400 p-4"
+            onClick={() => refetch()}>
+            <FiRefreshCw />
           </button>
-        </Link>
-        <input
-          className="bg-emerald-400 p-2 text-white"
-          placeholder="find a post"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+          <Link to="/posts/new">
+            <button type="button" className="bg-emerald-400 p-4">
+              <FiFilePlus />
+            </button>
+          </Link>
+        </div>
+        <div className="flex w-2/3 items-center gap-2">
+          <FiSearch className="h-full" />
+          <input
+            className="h-full flex-1 bg-emerald-400 p-2 placeholder-emerald-200"
+            placeholder="find a post"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       <div>

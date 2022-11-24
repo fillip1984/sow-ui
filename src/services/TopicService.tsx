@@ -1,16 +1,16 @@
-import { TopicSummary, TopicDetail, TopicFull } from "../Types";
+import { TopicDetail, TopicFull, TopicSummary } from "../Types";
 
-const AUTHOR_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/topics`;
+const TOPIC_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/topics`;
 // TODO: replace with user principal
 const username = "admin";
 const password = "admin";
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
-export const createAuthor = async (
+export const createTopic = async (
   topicdetail: TopicDetail
 ): Promise<TopicDetail> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}`, {
+    const response = await fetch(`${TOPIC_API_URL}`, {
       method: "POST",
       body: JSON.stringify(topicdetail),
       headers: {
@@ -20,7 +20,7 @@ export const createAuthor = async (
     });
 
     if (!response.ok) {
-      const msg = `An exception occurred while trying to create topicdetail. HTTP Status: ${response.status} and message: ${response.statusText}`;
+      const msg = `An exception occurred while trying to create topic. HTTP Status: ${response.status} and message: ${response.statusText}`;
       console.log(msg);
       throw new Error(msg);
     }
@@ -34,9 +34,9 @@ export const createAuthor = async (
   }
 };
 
-export const readAllTopicSummarys = async () => {
+export const readAllTopics = async (): Promise<TopicSummary[]> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}`, {
+    const response = await fetch(`${TOPIC_API_URL}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const readAllTopicSummarys = async () => {
     });
 
     if (!response.ok) {
-      const msg = `An exception occurred while reading all topicsummarys. HTTP Status: ${response.status} and message: ${response.statusText}`;
+      const msg = `An exception occurred while reading all topics. HTTP Status: ${response.status} and message: ${response.statusText}`;
       console.log(msg);
       throw new Error(msg);
     }
@@ -54,14 +54,14 @@ export const readAllTopicSummarys = async () => {
     return json;
   } catch (e) {
     // TODO: repetitive
-    console.log("Exception occurred while reading all topicsummarys", e);
-    throw new Error("Exception occurred while reading all topicsummarys");
+    console.log("Exception occurred while reading all topics", e);
+    throw new Error("Exception occurred while reading all topics");
   }
 };
 
-export const readTopicFullById = async (id: number): Promise<TopicFull> => {
+export const readTopicById = async (id: number): Promise<TopicFull> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}/${id}`, {
+    const response = await fetch(`${TOPIC_API_URL}/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${btoa(username + ":" + password)}`,
@@ -69,7 +69,7 @@ export const readTopicFullById = async (id: number): Promise<TopicFull> => {
     });
 
     if (!response.ok) {
-      const msg = `An exception occurred while reading topicfull by id. HTTP Status: ${response.status} and message: ${response.statusText}`;
+      const msg = `An exception occurred while reading topic by id. HTTP Status: ${response.status} and message: ${response.statusText}`;
       console.log(msg);
       throw new Error(msg);
     }
@@ -78,26 +78,24 @@ export const readTopicFullById = async (id: number): Promise<TopicFull> => {
     return json;
   } catch (e) {
     // TODO: repetitive
-    console.log("Exception occurred while reading topicfull by id", e);
-    throw new Error("Exception occurred while reading topicfull by id");
+    console.log("Exception occurred while reading topic by id", e);
+    throw new Error("Exception occurred while reading topic by id");
   }
 };
 
-export const updateTopicDetail = async (
-  topicdetail: TopicDetail
-): Promise<TopicDetail> => {
+export const updateTopic = async (topic: TopicFull): Promise<TopicFull> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}/${topic.id}`, {
+    const response = await fetch(`${TOPIC_API_URL}/${topic.id}`, {
       method: "PUT",
-      body: JSON.stringify(topicdetail),
+      body: JSON.stringify(topic),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Topicization: `Basic ${btoa(username + ":" + password)}`,
       },
     });
 
     if (!response.ok) {
-      const msg = `An exception occurred while updating topicdetail. HTTP Status: ${response.status} and message: ${response.statusText}`;
+      const msg = `An exception occurred while updating topic. HTTP Status: ${response.status} and message: ${response.statusText}`;
       console.log(msg);
       throw new Error(msg);
     }
@@ -106,14 +104,14 @@ export const updateTopicDetail = async (
     return json;
   } catch (e) {
     // TODO: repetitive
-    console.log("Exception occurred while updating topicdetail", e);
-    throw new Error("Exception occurred while updating topicdetail");
+    console.log("Exception occurred while updating topic", e);
+    throw new Error("Exception occurred while updating topic");
   }
 };
 
 export const deleteTopicById = async (id: number): Promise<boolean> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}/${id}`, {
+    const response = await fetch(`${TOPIC_API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "text/plain",
