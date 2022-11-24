@@ -161,7 +161,7 @@ const PostDetailPage = () => {
               <select
                 className="w-full rounded"
                 {...register("topic.id", {
-                  required: "Field is required",
+                  required: true,
                   valueAsNumber: true,
                   // ended up being able to convert id to number and store as topic.id
                   // setValueAs: (v) =>
@@ -174,9 +174,11 @@ const PostDetailPage = () => {
                   </option>
                 ))}
               </select>
+              {/* TODO: for some reason this field doesn't display
+              errors.topic.message properly so hard coding error message */}
               {errors.topic && (
                 <span className="font-bold text-emerald-900">
-                  {errors.topic.message}
+                  Field is required
                 </span>
               )}
             </div>
@@ -211,7 +213,12 @@ const PostDetailPage = () => {
 
             <div>
               <label htmlFor="contents" className="text-2xl">
-                Contents
+                Contents{" "}
+                {errors.contents && (
+                  <span className="font-bold text-emerald-900">
+                    {errors.contents.message}
+                  </span>
+                )}
               </label>
               <textarea
                 className="mt-1 w-full rounded"
@@ -230,11 +237,11 @@ const PostDetailPage = () => {
                 })}
                 defaultValue={post?.contents}
               />
-              {errors.contents && (
+              {/* {errors.contents && (
                 <span className="font-bold text-emerald-900">
                   {errors.contents.message}
                 </span>
-              )}
+              )} */}
             </div>
           </form>
         </div>
