@@ -23,7 +23,6 @@ const PostDetailPage = () => {
     const fetchAuthor = async () => {
       const authors = await readAllAuthors();
       const author = authors[0];
-      console.log("Setting test author to:", author);
       const actualAuthor = {
         id: author.id,
         firstName: author.firstName,
@@ -60,7 +59,9 @@ const PostDetailPage = () => {
 
   // forces react hook form to reset once we have existing form data
   useEffect(() => {
-    reset();
+    if (!isLoading) {
+      reset(post);
+    }
   }, [isLoading]);
 
   const {
@@ -110,15 +111,15 @@ const PostDetailPage = () => {
 
   return (
     <div className="flex-1">
-      <div className="toolbar flex w-full items-center justify-between bg-slate-200 p-2">
+      <div className="toolbar flex w-full items-center justify-between bg-secondary p-2">
         <button
           type="submit"
           form="post-detail-form"
-          className="rounded bg-slate-400 px-4 py-2 text-white">
+          className="rounded bg-primary px-4 py-2 text-white">
           Save
         </button>
         <Link to="/posts">
-          <button className="rounded border border-slate-400 px-4 py-2">
+          <button className="rounded border border-white px-4 py-2">
             Cancel
           </button>
         </Link>
@@ -154,7 +155,7 @@ const PostDetailPage = () => {
                 autoFocus
               />
               {errors.title && (
-                <span className="font-bold text-emerald-900">
+                <span className="font-bold text-primary">
                   {errors.title.message}
                 </span>
               )}
@@ -183,7 +184,7 @@ const PostDetailPage = () => {
               {/* TODO: for some reason this field doesn't display
               errors.topic.message properly so hard coding error message */}
               {errors.topic && (
-                <span className="font-bold text-emerald-900">
+                <span className="font-bold text-primary">
                   Field is required
                 </span>
               )}
@@ -211,7 +212,7 @@ const PostDetailPage = () => {
                 // defaultValue={post?.shortDescription}
               />
               {errors.shortDescription && (
-                <span className="font-bold text-emerald-900">
+                <span className="font-bold text-primary">
                   {errors.shortDescription.message}
                 </span>
               )}
@@ -221,7 +222,7 @@ const PostDetailPage = () => {
               <label htmlFor="contents" className="text-2xl">
                 Contents{" "}
                 {errors.contents && (
-                  <span className="font-bold text-emerald-900">
+                  <span className="font-bold text-primary">
                     {errors.contents.message}
                   </span>
                 )}
@@ -244,7 +245,7 @@ const PostDetailPage = () => {
                 // defaultValue={post?.contents}
               />
               {/* {errors.contents && (
-                <span className="font-bold text-emerald-900">
+                <span className="font-bold text-primary">
                   {errors.contents.message}
                 </span>
               )} */}
@@ -262,7 +263,7 @@ const PostDetailPage = () => {
         <div className="error -m-32 flex h-screen flex-col items-center justify-center text-4xl">
           Error
           <button
-            className="rounded bg-slate-400 p-4 text-white"
+            className="rounded bg-grey p-4 text-white"
             onClick={() => {
               refetch();
               topicRefetch();

@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-emerald-800 text-white;
+    @apply bg-dark text-white;
   }
 
   h1 {
@@ -26,6 +26,6 @@
   input[type="text"],
   textarea,
   select {
-    @apply bg-emerald-600;
+    @apply bg-grey;
   }
 }
