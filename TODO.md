@@ -10,9 +10,9 @@
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L4) | 4 | replace with user principal |
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L29) | 29 | repetitive? |
 | [./src/services/PostService.tsx](./src/services/PostService.tsx#L54) | 54 | repetitive |
-| [./src/services/PostService.tsx](./src/services/PostService.tsx#L79) | 79 | repetitive |
-| [./src/services/PostService.tsx](./src/services/PostService.tsx#L105) | 105 | repetitive |
-| [./src/services/PostService.tsx](./src/services/PostService.tsx#L130) | 130 | repetitive |
+| [./src/services/PostService.tsx](./src/services/PostService.tsx#L78) | 78 | repetitive |
+| [./src/services/PostService.tsx](./src/services/PostService.tsx#L104) | 104 | repetitive |
+| [./src/services/PostService.tsx](./src/services/PostService.tsx#L129) | 129 | repetitive |
 | [./src/services/TagService.tsx](./src/services/TagService.tsx#L4) | 4 | replace with user principal |
 | [./src/services/TagService.tsx](./src/services/TagService.tsx#L29) | 29 | repetitive? |
 | [./src/services/TagService.tsx](./src/services/TagService.tsx#L54) | 54 | repetitive |
@@ -26,4 +26,4 @@
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L106) | 106 | repetitive |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L131) | 131 | repetitive |
 | [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L20) | 20 | pull from context |
-| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L185) | 185 | for some reason this field doesn't display |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L184) | 184 | for some reason this field doesn't display |

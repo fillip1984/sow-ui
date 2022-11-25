@@ -33,8 +33,12 @@ const PostList = () => {
             </button>
           </Link>
         </div>
-        <div className="flex w-2/3 items-center gap-2 rounded-l pl-2">
-          <FiSearch className="h-full" />
+        <div className="flex w-2/3 items-center gap-2 rounded-l bg-secondary pl-2">
+          <button
+            onClick={() => refetch()}
+            className="flex h-full w-8 items-center justify-center">
+            <FiSearch />
+          </button>
           <DebounceInput
             className="h-full flex-1 rounded p-2 placeholder-lite"
             placeholder="find a post"
