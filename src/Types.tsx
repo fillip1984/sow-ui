@@ -9,26 +9,12 @@ export interface Base {
 // 2) Detail, all data that is necessary to show / edit an entity
 //   Extends summary, still pulling summaries on 1:1 to prevent circular references
 
-export interface PostSummary extends Base {
-  title: string;
-  shortDescription: string;
-  author: AuthorSummary;
-  topic: TopicSummary;
-  commentCount: number;
-  tags?: TagSummary[];
-}
-
-export interface PostDetail extends PostSummary {
-  contents: string;
-  comments?: CommentSummary[];
-}
-
 export interface AuthorSummary extends Base {
+  lastName: string;
+  firstName: string;
+  preferredName?: string;
   fullNameFirstThenLast: string;
   fullNameLastCommaFirst: string;
-  firstName: string;
-  lastName: string;
-  preferredName?: string;
   bio: string;
 }
 
@@ -36,13 +22,26 @@ export interface AuthorDetail extends AuthorSummary {
   posts?: PostSummary[];
 }
 
-export interface TopicSummary extends Base {
-  name: string;
-  description: string;
+export interface CommentSummary extends Base {
+  content: string;
 }
 
-export interface TopicDetail extends TopicSummary {
-  posts?: PostSummary[];
+export interface CommentDetail extends CommentSummary {
+  post: PostSummary;
+}
+
+export interface PostSummary extends Base {
+  title: string;
+  shortDescription: string;
+  author: AuthorSummary;
+  commentCount: number;
+  tags?: TagSummary[];
+  topic: TopicSummary;
+}
+
+export interface PostDetail extends PostSummary {
+  contents: string;
+  comments?: CommentSummary[];
 }
 
 export interface TagSummary extends Base {
@@ -54,10 +53,11 @@ export interface TagDetail extends TagSummary {
   posts: PostSummary[];
 }
 
-export interface CommentSummary extends Base {
-  text: string;
+export interface TopicSummary extends Base {
+  name: string;
+  description: string;
 }
 
-export interface CommentDetail extends CommentSummary {
-  post: PostSummary;
+export interface TopicDetail extends TopicSummary {
+  posts?: PostSummary[];
 }
