@@ -58,6 +58,11 @@ const PostDetailPage = () => {
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
 
+  // forces react hook form to reset once we have existing form data
+  useEffect(() => {
+    reset();
+  }, [isLoading]);
+
   const {
     data: topics,
     isLoading: isTopicsLoading,
@@ -69,6 +74,7 @@ const PostDetailPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<PostDetail>({
     defaultValues: post,
   });
@@ -235,7 +241,7 @@ const PostDetailPage = () => {
                     message: "Field must be 9000 characters or less",
                   },
                 })}
-                defaultValue={post?.contents}
+                // defaultValue={post?.contents}
               />
               {/* {errors.contents && (
                 <span className="font-bold text-emerald-900">

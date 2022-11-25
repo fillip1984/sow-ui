@@ -19,7 +19,7 @@ const PostList = () => {
     isError,
     isLoading,
     refetch,
-  } = useQuery(["postSummaries"], () => readAllPosts(getQ()));
+  } = useQuery(["posts"], () => readAllPosts(getQ()));
 
   useEffect(() => {
     refetch();
