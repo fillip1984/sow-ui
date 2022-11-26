@@ -40,7 +40,7 @@ export const createPost = async (post: PostDetail): Promise<PostDetail> => {
   }
 };
 
-export const readAllPosts = async (q: string): Promise<PostSummary[]> => {
+export const readAllPosts = async (q = ""): Promise<PostSummary[]> => {
   try {
     const response = await fetch(`${POST_API_URL}?q=${q}`, {
       method: "GET",

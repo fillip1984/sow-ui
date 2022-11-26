@@ -7,6 +7,7 @@ import AuthorList from "./pages/authors/AuthorList";
 import PostDetailPage from "./pages/posts/PostDetailPage";
 import PostList from "./pages/posts/PostList";
 import TagList from "./pages/tags/TagList";
+import TopicDetailPage from "./pages/topics/TopicDetailPage";
 import TopicList from "./pages/topics/TopicList";
 
 const queryClient = new QueryClient({
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/authors" element={<AuthorList />} />
             <Route path="/authors/:id" element={<AuthorDetailPage />} />
             <Route path="/topics" element={<TopicList />} />
+            <Route path="/topics/:id" element={<TopicDetailPage />} />
             <Route path="/tags" element={<TagList />} />
           </Routes>
         </Router>

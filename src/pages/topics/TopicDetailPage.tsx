@@ -2,46 +2,46 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  authorKeys,
-  createAuthor,
-  deleteAuthorById,
-  readAuthorById,
-  updateAuthor,
-} from "../../services/AuthorService";
-import { AuthorDetail } from "../../Types";
+  createTopic,
+  deleteTopicById,
+  readTopicById,
+  topicKeys,
+  updateTopic,
+} from "../../services/TopicService";
+import { TopicDetail } from "../../Types";
 
-const AuthorDetailPage = () => {
+const TopicDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isNew = id && id === "new";
   const queryClient = useQueryClient();
 
   const {
-    data: author,
+    data: topic,
     isLoading,
     isError,
     refetch,
-  } = useQuery(authorKeys.detail(Number(id)), () => {
+  } = useQuery(topicKeys.detail(Number(id)), () => {
     if (!isNew) {
-      return readAuthorById(Number(id));
+      return readTopicById(Number(id));
     } else {
       return {
         id: -1,
-        firstName: "",
-        lastName: "",
-      } as AuthorDetail;
+        name: "",
+        description: "",
+      } as TopicDetail;
     }
   });
-  const { mutate: createAuthorMutator } = useMutation(createAuthor);
-  const { mutate: updateAuthorMutator } = useMutation(updateAuthor);
-  const { mutate: deleteAuthorMutator } = useMutation(deleteAuthorById);
+  const { mutate: createTopicMutator } = useMutation(createTopic);
+  const { mutate: updateTopicMutator } = useMutation(updateTopic);
+  const { mutate: deleteTopicMutator } = useMutation(deleteTopicById);
 
   // TODO: for some reason this trick works on PostDetailPage but not here. I'm able to submit without any values at least once on the first visit to the page?
   // forces react hook form to reset once we have existing form data
   // useEffect(() => {
   //   if (!isLoading) {
-  //     console.log("resetting", author);
-  //     reset(author);
+  //     console.log("resetting", topic);
+  //     reset(topic);
   //   }
   // }, [isLoading]);
 
@@ -50,34 +50,34 @@ const AuthorDetailPage = () => {
     handleSubmit,
     formState: { errors },
     // reset,
-  } = useForm<AuthorDetail>({
-    // defaultValues: author,
+  } = useForm<TopicDetail>({
+    // defaultValues: topic,
   });
-  const onSubmit: SubmitHandler<AuthorDetail> = (formData) => {
+  const onSubmit: SubmitHandler<TopicDetail> = (formData) => {
     if (isNew) {
       console.log("formdata", formData);
-      createAuthorMutator(
+      createTopicMutator(
         {
           ...formData,
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(authorKeys.lists);
-            navigate("/authors");
+            queryClient.invalidateQueries(topicKeys.lists);
+            navigate("/topics");
           },
         }
       );
     } else {
-      updateAuthorMutator(
+      updateTopicMutator(
         {
           ...formData,
           id: Number(id),
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(authorKeys.lists);
-            queryClient.invalidateQueries(authorKeys.detail(Number(id)));
-            navigate("/authors");
+            queryClient.invalidateQueries(topicKeys.lists);
+            queryClient.invalidateQueries(topicKeys.detail(Number(id)));
+            navigate("/topics");
           },
         }
       );
@@ -85,10 +85,10 @@ const AuthorDetailPage = () => {
   };
 
   const handleDelete = () => {
-    deleteAuthorMutator(Number(id), {
+    deleteTopicMutator(Number(id), {
       onSuccess: () => {
-        queryClient.invalidateQueries(authorKeys.lists);
-        navigate("/authors");
+        queryClient.invalidateQueries(topicKeys.lists);
+        navigate("/topics");
       },
     });
   };
@@ -98,7 +98,7 @@ const AuthorDetailPage = () => {
       <div className="toolbar flex w-full items-center justify-between bg-secondary p-2">
         <button
           type="submit"
-          form="author-detail-form"
+          form="topic-detail-form"
           className="rounded bg-primary px-4 py-2 text-white">
           Save
         </button>
@@ -111,7 +111,7 @@ const AuthorDetailPage = () => {
           </button>
         )}
 
-        <Link to="/authors">
+        <Link to="/topics">
           <button className="rounded border border-white px-4 py-2">
             Cancel
           </button>
@@ -123,17 +123,16 @@ const AuthorDetailPage = () => {
           <form
             className="flex flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
-            id="author-detail-form"
+            id="topic-detail-form"
             noValidate>
             <div>
-              <label htmlFor="firstName" className="text-2xl">
-                First Name
+              <label htmlFor="name" className="text-2xl">
+                Name
               </label>
               <input
                 className="mt-1 w-full rounded"
-                id="firstName"
                 type="text"
-                {...register("firstName", {
+                {...register("name", {
                   required: "Field is required",
                   minLength: {
                     value: 2,
@@ -145,85 +144,38 @@ const AuthorDetailPage = () => {
                   },
                 })}
                 autoFocus
-                defaultValue={author.firstName}
+                defaultValue={topic.name}
               />
-              {errors.firstName && (
+              {errors.name && (
                 <span className="font-bold text-primary">
-                  {errors.firstName.message}
+                  {errors.name.message}
                 </span>
               )}
             </div>
 
             <div>
-              <label htmlFor="lastName" className="text-2xl">
-                Last Name
-              </label>
-              <input
-                className="mt-1 w-full rounded"
-                id="lastName"
-                type="text"
-                {...register("lastName", {
-                  required: "Field is required",
-                  minLength: {
-                    value: 2,
-                    message: "Field must be at least 2 characters",
-                  },
-                  maxLength: {
-                    value: 100,
-                    message: "Field must be 100 characters or less",
-                  },
-                })}
-                defaultValue={author.lastName}
-              />
-              {errors.lastName && (
-                <span className="font-bold text-primary">
-                  {errors.lastName.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="preferredName" className="text-2xl">
-                Preferred Name <span className="font-thin">(Optional)</span>
-              </label>
-              <input
-                className="mt-1 w-full rounded"
-                id="preferredName"
-                type="text"
-                {...register("preferredName", {
-                  maxLength: {
-                    value: 100,
-                    message: "Field must be 100 characters or less",
-                  },
-                })}
-                defaultValue={author.preferredName}
-              />
-              {errors.preferredName && (
-                <span className="font-bold text-primary">
-                  {errors.preferredName.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="bio" className="text-2xl">
-                Bio
+              <label htmlFor="description" className="text-2xl">
+                Description
               </label>
               <textarea
                 className="mt-1 w-full rounded"
-                id="bio"
                 rows={4}
-                {...register("bio", {
+                {...register("description", {
+                  required: "Field is required",
+                  minLength: {
+                    value: 5,
+                    message: "Field must be at least 5 characters",
+                  },
                   maxLength: {
                     value: 500,
                     message: "Field must be 500 characters or less",
                   },
                 })}
-                defaultValue={author.bio}
+                defaultValue={topic.description}
               />
-              {errors.bio && (
+              {errors.description && (
                 <span className="font-bold text-primary">
-                  {errors.bio.message}
+                  {errors.description.message}
                 </span>
               )}
             </div>
@@ -252,4 +204,4 @@ const AuthorDetailPage = () => {
   );
 };
 
-export default AuthorDetailPage;
+export default TopicDetailPage;

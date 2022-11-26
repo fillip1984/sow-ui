@@ -5,6 +5,14 @@ const TOPIC_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/topics`;
 const username = "admin";
 const password = "admin";
 
+export const topicKeys = {
+  lists: ["topic-list"] as const,
+  list: (filter: string) => [...topicKeys.lists, { filter }] as const,
+  details: ["topic-details"] as const,
+  detail: (id: number) => [...topicKeys.details, id] as const,
+  all: () => [...topicKeys.lists, ...topicKeys.details] as const,
+};
+
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createTopic = async (
   topicdetail: TopicDetail
@@ -34,9 +42,9 @@ export const createTopic = async (
   }
 };
 
-export const readAllTopics = async (): Promise<TopicSummary[]> => {
+export const readAllTopics = async (q = ""): Promise<TopicSummary[]> => {
   try {
-    const response = await fetch(`${TOPIC_API_URL}`, {
+    const response = await fetch(`${TOPIC_API_URL}?q=${q}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +98,7 @@ export const updateTopic = async (topic: TopicDetail): Promise<TopicDetail> => {
       body: JSON.stringify(topic),
       headers: {
         "Content-Type": "application/json",
-        Topicization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Basic ${btoa(username + ":" + password)}`,
       },
     });
 

@@ -89,7 +89,7 @@ const PostDetailPage = () => {
     isLoading: isTopicsLoading,
     isError: isTopicsError,
     refetch: topicRefetch,
-  } = useQuery(["topics"], readAllTopics);
+  } = useQuery(["topics"], () => readAllTopics(""));
 
   const {
     register,
