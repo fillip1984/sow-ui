@@ -21,42 +21,26 @@ const AuthorDetailPage = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery(
-    ["authors", id],
-    () => {
-      if (!isNew) {
-        return readAuthorById(Number(id));
-      } else {
-        return {
-          id: -1,
-          firstName: "",
-          lastName: "",
-          bio: "",
-        } as AuthorDetail;
-      }
+  } = useQuery(["authors", id], () => {
+    if (!isNew) {
+      return readAuthorById(Number(id));
+    } else {
+      return {
+        id: -1,
+        firstName: "",
+        lastName: "",
+      } as AuthorDetail;
     }
-    // { enabled: false }
-  );
+  });
   const { mutate: createAuthorMutator } = useMutation(createAuthor);
   const { mutate: updateAuthorMutator } = useMutation(updateAuthor);
   const { mutate: deleteAuthorMutator } = useMutation(deleteAuthorById);
 
-  /* trying to fix a bug in my code. When I run deleteAuthorMutator and invalidateQueries 
-     the useQuery on this page runs before I can navigate away and throws an HTTP 500 error 
-     since the entity it is trying to fetch is no longer available
-  */
-  // useEffect(() => {
-  //   refetch();
-  //   if (!isNew) {
-  //     console.log(
-  //       "reading author---got a bug I can't fix. When I delete this author and invalidate the query/cache this useQuery hook attempts to refetch the author we just deleted"
-  //     );
-  //   }
-  // }, []);
-
+  // TODO: for some reason this trick works on PostDetailPage but not here. I'm able to submit without any values at least once on the first visit to the page?
   // forces react hook form to reset once we have existing form data
   useEffect(() => {
     if (!isLoading) {
+      console.log("resetting", author);
       reset(author);
     }
   }, [isLoading]);
@@ -71,6 +55,7 @@ const AuthorDetailPage = () => {
   });
   const onSubmit: SubmitHandler<AuthorDetail> = (formData) => {
     if (isNew) {
+      console.log("formdata", formData);
       createAuthorMutator(
         {
           ...formData,
@@ -100,9 +85,8 @@ const AuthorDetailPage = () => {
   const handleDelete = () => {
     deleteAuthorMutator(Number(id), {
       onSuccess: () => {
-        console.log("successfully deleted author, invalidating queries");
+        // TODO: this invalidateQueries causes the useQuery above to try and refetch the latest but since it is deleted we get an error, HTTP 500 since the entity is no longer available
         queryClient.invalidateQueries(["authors"]);
-        console.log("navigating to authors list");
         navigate("/authors");
       },
     });
@@ -160,6 +144,7 @@ const AuthorDetailPage = () => {
                   },
                 })}
                 autoFocus
+                // defaultValue={author.firstName}
               />
               {errors.firstName && (
                 <span className="font-bold text-primary">
@@ -187,7 +172,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                autoFocus
+                // defaultValue={author.lastName}
               />
               {errors.lastName && (
                 <span className="font-bold text-primary">
@@ -210,7 +195,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                autoFocus
+                // defaultValue={author.preferredName}
               />
               {errors.preferredName && (
                 <span className="font-bold text-primary">
@@ -233,6 +218,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 500 characters or less",
                   },
                 })}
+                // defaultValue={author.bio}
               />
               {errors.bio && (
                 <span className="font-bold text-primary">
