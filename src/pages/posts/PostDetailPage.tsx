@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { readAllAuthors } from "../../services/AuthorService";
 import {
   createPost,
+  deletePostById,
   readPostById,
   updatePost,
 } from "../../services/PostService";
@@ -56,6 +57,7 @@ const PostDetailPage = () => {
   });
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
+  const { mutate: deletePostMutator } = useMutation(deletePostById);
 
   // forces react hook form to reset once we have existing form data
   useEffect(() => {
@@ -109,6 +111,15 @@ const PostDetailPage = () => {
     }
   };
 
+  const handleDelete = () => {
+    deletePostMutator(Number(id), {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["posts"]);
+        navigate("/posts");
+      },
+    });
+  };
+
   return (
     <div className="flex-1">
       <div className="toolbar flex w-full items-center justify-between bg-secondary p-2">
@@ -118,6 +129,15 @@ const PostDetailPage = () => {
           className="rounded bg-primary px-4 py-2 text-white">
           Save
         </button>
+        {!isNew && (
+          <button
+            type="button"
+            className="rounded bg-lite px-4 py-2 text-dark"
+            onClick={handleDelete}>
+            Delete
+          </button>
+        )}
+
         <Link to="/posts">
           <button className="rounded border border-white px-4 py-2">
             Cancel
@@ -244,11 +264,6 @@ const PostDetailPage = () => {
                 })}
                 // defaultValue={post?.contents}
               />
-              {/* {errors.contents && (
-                <span className="font-bold text-primary">
-                  {errors.contents.message}
-                </span>
-              )} */}
             </div>
           </form>
         </div>
