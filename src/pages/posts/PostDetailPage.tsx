@@ -116,7 +116,6 @@ const PostDetailPage = () => {
       updatePostMutator(
         {
           ...formData,
-          // id: Number(id),
         },
         {
           onSuccess: () => {
@@ -190,7 +189,6 @@ const PostDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                // defaultValue={post?.title}
                 autoFocus
               />
               {errors.title && (
@@ -209,9 +207,6 @@ const PostDetailPage = () => {
                 {...register("topic.id", {
                   required: true,
                   valueAsNumber: true,
-                  // ended up being able to convert id to number and store as topic.id
-                  // setValueAs: (v) =>
-                  //   topics?.find((topic) => topic.id === Number(v)),
                 })}>
                 <option value="">Choose a topic...</option>
                 {topics?.map((topic) => (
@@ -248,7 +243,6 @@ const PostDetailPage = () => {
                     message: "Field must be 250 characters or less",
                   },
                 })}
-                // defaultValue={post?.shortDescription}
               />
               {errors.shortDescription && (
                 <span className="font-bold text-primary">
@@ -281,7 +275,6 @@ const PostDetailPage = () => {
                     message: "Field must be 9000 characters or less",
                   },
                 })}
-                // defaultValue={post?.contents}
               />
             </div>
           </form>
