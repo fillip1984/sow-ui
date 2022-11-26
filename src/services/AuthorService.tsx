@@ -34,9 +34,9 @@ export const createAuthor = async (
   }
 };
 
-export const readAllAuthors = async (): Promise<AuthorSummary[]> => {
+export const readAllAuthors = async (q = ""): Promise<AuthorSummary[]> => {
   try {
-    const response = await fetch(`${AUTHOR_API_URL}`, {
+    const response = await fetch(`${AUTHOR_API_URL}?q=${q}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

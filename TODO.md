@@ -25,5 +25,5 @@
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L80) | 80 | repetitive |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L106) | 106 | repetitive |
 | [./src/services/TopicService.tsx](./src/services/TopicService.tsx#L131) | 131 | repetitive |
-| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L20) | 20 | pull from context |
-| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L184) | 184 | for some reason this field doesn't display |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L21) | 21 | pull from context |
+| [./src/pages/posts/PostDetailPage.tsx](./src/pages/posts/PostDetailPage.tsx#L218) | 218 | for some reason this field doesn't display |

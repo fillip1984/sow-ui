@@ -10,8 +10,8 @@ export interface Base {
 //   Extends summary, still pulling summaries on 1:1 to prevent circular references
 
 export interface AuthorSummary extends Base {
-  lastName: string;
   firstName: string;
+  lastName: string;
   preferredName?: string;
   fullNameFirstThenLast: string;
   fullNameLastCommaFirst: string;

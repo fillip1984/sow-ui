@@ -1,21 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { readAllPosts } from "../../services/PostService";
-
+import { readAllAuthors } from "../../services/AuthorService";
 import { DebounceInput } from "react-debounce-input";
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
-import PostCard from "./PostCard";
+import AuthorCard from "./AuthorCard";
 
-const PostList = () => {
+const AuthorList = () => {
   const [filter, setFilter] = useState("");
 
   const {
-    data: postSummaries,
+    data: authorSummaries,
     isError,
     isLoading,
     refetch,
-  } = useQuery(["posts", filter], () => readAllPosts(filter));
+  } = useQuery(["authors", filter], () => readAllAuthors(filter));
 
   return (
     <div className="p-4">
@@ -27,7 +26,7 @@ const PostList = () => {
             onClick={() => refetch()}>
             <FiRefreshCw />
           </button>
-          <Link to="/posts/new">
+          <Link to="/authors/new">
             <button type="button" className="rounded bg-secondary p-4">
               <FiFilePlus />
             </button>
@@ -41,7 +40,7 @@ const PostList = () => {
           </button>
           <DebounceInput
             className="h-full flex-1 rounded p-2 placeholder-lite"
-            placeholder="find a post"
+            placeholder="find an author"
             minLength={2}
             debounceTimeout={300}
             value={filter}
@@ -51,13 +50,13 @@ const PostList = () => {
       </div>
 
       <div className="pt-4">
-        {postSummaries?.map((postSummary) => (
-          <PostCard postSummary={postSummary} key={postSummary.id} />
+        {authorSummaries?.map((authorSummary) => (
+          <AuthorCard authorSummary={authorSummary} key={authorSummary.id} />
         ))}
       </div>
 
-      {!isLoading && !isError && postSummaries.length === 0 && (
-        <div>There are no posts</div>
+      {!isLoading && !isError && authorSummaries.length === 0 && (
+        <div>There are no authors</div>
       )}
       {isLoading && (
         <div className="loading -m-32 flex h-screen flex-col items-center justify-center text-4xl">
@@ -76,4 +75,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default AuthorList;

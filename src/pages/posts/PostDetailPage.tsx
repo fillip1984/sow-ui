@@ -56,8 +56,8 @@ const PostDetailPage = () => {
           author: author,
         } as PostDetail;
       }
-    },
-    { enabled: false }
+    }
+    // { enabled: false }
   );
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
@@ -67,14 +67,14 @@ const PostDetailPage = () => {
      the useQuery on this page runs before I can navigate away and throws an HTTP 500 error 
      since the entity it is trying to fetch is no longer available
   */
-  useEffect(() => {
-    refetch();
-    if (!isNew) {
-      console.log(
-        "reading post---got a bug I can't fix. When I delete this post and invalidate the query/cache this useQuery hook attempts to refetch the post we just deleted"
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  //   if (!isNew) {
+  //     console.log(
+  //       "reading post---got a bug I can't fix. When I delete this post and invalidate the query/cache this useQuery hook attempts to refetch the post we just deleted"
+  //     );
+  //   }
+  // }, []);
 
   // forces react hook form to reset once we have existing form data
   useEffect(() => {
