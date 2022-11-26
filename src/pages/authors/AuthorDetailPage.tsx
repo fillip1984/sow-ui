@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  authorKeys,
   createAuthor,
   deleteAuthorById,
   readAuthorById,
@@ -21,7 +22,7 @@ const AuthorDetailPage = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery(["authors", id], () => {
+  } = useQuery(authorKeys.detail(Number(id)), () => {
     if (!isNew) {
       return readAuthorById(Number(id));
     } else {
@@ -38,20 +39,20 @@ const AuthorDetailPage = () => {
 
   // TODO: for some reason this trick works on PostDetailPage but not here. I'm able to submit without any values at least once on the first visit to the page?
   // forces react hook form to reset once we have existing form data
-  useEffect(() => {
-    if (!isLoading) {
-      console.log("resetting", author);
-      reset(author);
-    }
-  }, [isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     console.log("resetting", author);
+  //     reset(author);
+  //   }
+  // }, [isLoading]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<AuthorDetail>({
-    defaultValues: author,
+    // defaultValues: author,
   });
   const onSubmit: SubmitHandler<AuthorDetail> = (formData) => {
     if (isNew) {
@@ -62,7 +63,7 @@ const AuthorDetailPage = () => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(["authors"]);
+            queryClient.invalidateQueries(authorKeys.lists);
             navigate("/authors");
           },
         }
@@ -71,10 +72,12 @@ const AuthorDetailPage = () => {
       updateAuthorMutator(
         {
           ...formData,
+          id: Number(id),
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(["authors"]);
+            queryClient.invalidateQueries(authorKeys.lists);
+            queryClient.invalidateQueries(authorKeys.detail(Number(id)));
             navigate("/authors");
           },
         }
@@ -85,8 +88,7 @@ const AuthorDetailPage = () => {
   const handleDelete = () => {
     deleteAuthorMutator(Number(id), {
       onSuccess: () => {
-        // TODO: this invalidateQueries causes the useQuery above to try and refetch the latest but since it is deleted we get an error, HTTP 500 since the entity is no longer available
-        queryClient.invalidateQueries(["authors"]);
+        queryClient.invalidateQueries(authorKeys.lists);
         navigate("/authors");
       },
     });
@@ -144,7 +146,7 @@ const AuthorDetailPage = () => {
                   },
                 })}
                 autoFocus
-                // defaultValue={author.firstName}
+                defaultValue={author.firstName}
               />
               {errors.firstName && (
                 <span className="font-bold text-primary">
@@ -172,7 +174,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                // defaultValue={author.lastName}
+                defaultValue={author.lastName}
               />
               {errors.lastName && (
                 <span className="font-bold text-primary">
@@ -195,7 +197,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 100 characters or less",
                   },
                 })}
-                // defaultValue={author.preferredName}
+                defaultValue={author.preferredName}
               />
               {errors.preferredName && (
                 <span className="font-bold text-primary">
@@ -218,7 +220,7 @@ const AuthorDetailPage = () => {
                     message: "Field must be 500 characters or less",
                   },
                 })}
-                // defaultValue={author.bio}
+                defaultValue={author.bio}
               />
               {errors.bio && (
                 <span className="font-bold text-primary">

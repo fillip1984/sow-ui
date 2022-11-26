@@ -5,6 +5,14 @@ const AUTHOR_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/authors`;
 const username = "admin";
 const password = "admin";
 
+export const authorKeys = {
+  lists: ["author-list"] as const,
+  list: (filter: string) => [...authorKeys.lists, { filter }] as const,
+  details: ["author-details"] as const,
+  detail: (id: number) => [...authorKeys.details, id] as const,
+  all: () => [...authorKeys.lists, ...authorKeys.details] as const,
+};
+
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createAuthor = async (
   author: AuthorDetail

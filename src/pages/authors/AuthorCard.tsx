@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { BiCategory, BiCommentDetail, BiPurchaseTagAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { readAuthorById } from "../../services/AuthorService";
+import { authorKeys, readAuthorById } from "../../services/AuthorService";
 import { AuthorSummary } from "../../Types";
 
 interface AuthorCardProps {
@@ -11,7 +10,7 @@ interface AuthorCardProps {
 const AuthorCard = ({ authorSummary }: AuthorCardProps) => {
   const queryClient = useQueryClient();
   const prefetchAuthor = async (authorId: number) => {
-    await queryClient.prefetchQuery(["authors", authorId], () =>
+    await queryClient.prefetchQuery(authorKeys.detail(authorId), () =>
       readAuthorById(authorId)
     );
   };

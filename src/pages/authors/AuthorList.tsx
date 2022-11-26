@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { readAllAuthors } from "../../services/AuthorService";
+import { authorKeys, readAllAuthors } from "../../services/AuthorService";
 import { DebounceInput } from "react-debounce-input";
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
 import AuthorCard from "./AuthorCard";
@@ -14,7 +14,7 @@ const AuthorList = () => {
     isError,
     isLoading,
     refetch,
-  } = useQuery(["authors", filter], () => readAllAuthors(filter));
+  } = useQuery(authorKeys.list(filter), () => readAllAuthors(filter));
 
   return (
     <div className="p-4">
