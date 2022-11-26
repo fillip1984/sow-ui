@@ -6,6 +6,7 @@ import AuthorDetailPage from "./pages/authors/AuthorDetailPage";
 import AuthorList from "./pages/authors/AuthorList";
 import PostDetailPage from "./pages/posts/PostDetailPage";
 import PostList from "./pages/posts/PostList";
+import TagDetailPage from "./pages/tags/TagDetailPage";
 import TagList from "./pages/tags/TagList";
 import TopicDetailPage from "./pages/topics/TopicDetailPage";
 import TopicList from "./pages/topics/TopicList";
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/topics" element={<TopicList />} />
             <Route path="/topics/:id" element={<TopicDetailPage />} />
             <Route path="/tags" element={<TagList />} />
+            <Route path="/tags/:id" element={<TagDetailPage />} />
           </Routes>
         </Router>
         <ReactQueryDevtools />

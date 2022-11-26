@@ -5,6 +5,14 @@ const TAG_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/tags`;
 const username = "admin";
 const password = "admin";
 
+export const tagKeys = {
+  lists: ["tag-list"] as const,
+  list: (filter: string) => [...tagKeys.lists, { filter }] as const,
+  details: ["tag-details"] as const,
+  detail: (id: number) => [...tagKeys.details, id] as const,
+  all: () => [...tagKeys.lists, ...tagKeys.details] as const,
+};
+
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createTag = async (tag: TagDetail): Promise<TagDetail> => {
   try {
