@@ -42,22 +42,39 @@ const PostDetailPage = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery(["posts", id], () => {
-    if (!isNew) {
-      return readPostById(Number(id));
-    } else {
-      return {
-        id: -1,
-        title: "",
-        shortDescription: "",
-        contents: "",
-        author: author,
-      } as PostDetail;
-    }
-  });
+  } = useQuery(
+    ["posts", id],
+    () => {
+      if (!isNew) {
+        return readPostById(Number(id));
+      } else {
+        return {
+          id: -1,
+          title: "",
+          shortDescription: "",
+          contents: "",
+          author: author,
+        } as PostDetail;
+      }
+    },
+    { enabled: false }
+  );
   const { mutate: createPostMutator } = useMutation(createPost);
   const { mutate: updatePostMutator } = useMutation(updatePost);
   const { mutate: deletePostMutator } = useMutation(deletePostById);
+
+  /* trying to fix a bug in my code. When I run deletePostMutator and invalidateQueries 
+     the useQuery on this page runs before I can navigate away and throws an HTTP 500 error 
+     since the entity it is trying to fetch is no longer available
+  */
+  useEffect(() => {
+    refetch();
+    if (!isNew) {
+      console.log(
+        "reading post---got a bug I can't fix. When I delete this post and invalidate the query/cache this useQuery hook attempts to refetch the post we just deleted"
+      );
+    }
+  }, []);
 
   // forces react hook form to reset once we have existing form data
   useEffect(() => {
@@ -114,7 +131,9 @@ const PostDetailPage = () => {
   const handleDelete = () => {
     deletePostMutator(Number(id), {
       onSuccess: () => {
+        console.log("successfully deleted post, invalidating queries");
         queryClient.invalidateQueries(["posts"]);
+        console.log("navigating to posts list");
         navigate("/posts");
       },
     });
