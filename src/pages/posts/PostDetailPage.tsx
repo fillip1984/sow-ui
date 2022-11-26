@@ -6,6 +6,7 @@ import { readAllAuthors } from "../../services/AuthorService";
 import {
   createPost,
   deletePostById,
+  postKeys,
   readPostById,
   updatePost,
 } from "../../services/PostService";
@@ -43,7 +44,7 @@ const PostDetailPage = () => {
     isError,
     refetch,
   } = useQuery(
-    ["posts", id],
+    postKeys.detail(Number(id)),
     () => {
       if (!isNew) {
         return readPostById(Number(id));
@@ -107,7 +108,7 @@ const PostDetailPage = () => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(["posts"]);
+            queryClient.invalidateQueries(postKeys.lists);
             navigate("/posts");
           },
         }
@@ -119,7 +120,8 @@ const PostDetailPage = () => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries(["posts"]);
+            queryClient.invalidateQueries(postKeys.lists);
+            queryClient.invalidateQueries(postKeys.detail(Number(id)));
             navigate("/posts");
           },
         }
@@ -131,7 +133,7 @@ const PostDetailPage = () => {
     deletePostMutator(Number(id), {
       onSuccess: () => {
         console.log("successfully deleted post, invalidating queries");
-        queryClient.invalidateQueries(["posts"]);
+        queryClient.invalidateQueries(postKeys.lists);
         console.log("navigating to posts list");
         navigate("/posts");
       },

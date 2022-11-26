@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { BiCategory, BiCommentDetail, BiPurchaseTagAlt } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { readPostById } from "../../services/PostService";
+import { postKeys, readPostById } from "../../services/PostService";
 import { PostSummary } from "../../Types";
 
 interface PostCardProps {
@@ -12,7 +12,7 @@ interface PostCardProps {
 const PostCard = ({ postSummary }: PostCardProps) => {
   const queryClient = useQueryClient();
   const prefetchPost = async (postId: number) => {
-    await queryClient.prefetchQuery(["posts", postId], () =>
+    await queryClient.prefetchQuery(postKeys.detail(postId), () =>
       readPostById(postId)
     );
   };

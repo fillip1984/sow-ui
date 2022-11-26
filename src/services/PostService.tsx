@@ -5,6 +5,14 @@ const POST_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/posts`;
 const username = "admin";
 const password = "admin";
 
+export const postKeys = {
+  lists: ["post-list"] as const,
+  list: (filter: string) => [...postKeys.lists, filter] as const,
+  details: ["post-details"] as const,
+  detail: (id: number) => [...postKeys.details, id] as const,
+  all: () => [...postKeys.lists, ...postKeys.details] as const,
+};
+
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createPost = async (post: PostDetail): Promise<PostDetail> => {
   try {

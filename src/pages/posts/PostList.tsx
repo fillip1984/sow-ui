@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { readAllPosts } from "../../services/PostService";
+import { postKeys, readAllPosts } from "../../services/PostService";
 
 import { DebounceInput } from "react-debounce-input";
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
@@ -15,7 +15,7 @@ const PostList = () => {
     isError,
     isLoading,
     refetch,
-  } = useQuery(["posts", filter], () => readAllPosts(filter));
+  } = useQuery(postKeys.list(filter), () => readAllPosts(filter));
 
   return (
     <div className="p-4">
