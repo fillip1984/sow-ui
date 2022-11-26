@@ -7,7 +7,7 @@ const password = "admin";
 
 export const postKeys = {
   lists: ["post-list"] as const,
-  list: (filter: string) => [...postKeys.lists, filter] as const,
+  list: (filter: string) => [...postKeys.lists, { filter }] as const,
   details: ["post-details"] as const,
   detail: (id: number) => [...postKeys.details, id] as const,
   all: () => [...postKeys.lists, ...postKeys.details] as const,

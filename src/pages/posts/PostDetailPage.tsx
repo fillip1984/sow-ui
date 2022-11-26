@@ -132,9 +132,7 @@ const PostDetailPage = () => {
   const handleDelete = () => {
     deletePostMutator(Number(id), {
       onSuccess: () => {
-        console.log("successfully deleted post, invalidating queries");
         queryClient.invalidateQueries(postKeys.lists);
-        console.log("navigating to posts list");
         navigate("/posts");
       },
     });
