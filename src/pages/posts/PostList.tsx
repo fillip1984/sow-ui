@@ -5,7 +5,7 @@ import { postKeys, readAllPosts } from "../../services/PostService";
 
 import { DebounceInput } from "react-debounce-input";
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
-import PostCard from "./PostCard";
+import PostCard from "../../components/posts/PostCard";
 
 const PostList = () => {
   const [filter, setFilter] = useState("");
