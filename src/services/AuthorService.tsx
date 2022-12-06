@@ -1,9 +1,6 @@
-import { AuthorDetail, AuthorSummary } from "../Types";
+import { AuthorDetail, AuthorSummary, UserAccount } from "../Types";
 
 const AUTHOR_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/authors`;
-// TODO: replace with user principal
-const username = "admin";
-const password = "admin";
 
 export const authorKeys = {
   lists: ["author-list"] as const,
@@ -15,7 +12,8 @@ export const authorKeys = {
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createAuthor = async (
-  author: AuthorDetail
+  author: AuthorDetail,
+  userAccount: UserAccount
 ): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}`, {
@@ -23,7 +21,7 @@ export const createAuthor = async (
       body: JSON.stringify(author),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -42,13 +40,16 @@ export const createAuthor = async (
   }
 };
 
-export const readAllAuthors = async (q = ""): Promise<AuthorSummary[]> => {
+export const readAllAuthors = async (
+  q = "",
+  userAccount: UserAccount
+): Promise<AuthorSummary[]> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}?q=${q}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -67,12 +68,15 @@ export const readAllAuthors = async (q = ""): Promise<AuthorSummary[]> => {
   }
 };
 
-export const readAuthorById = async (id: number): Promise<AuthorDetail> => {
+export const readAuthorById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}/${id}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -92,7 +96,8 @@ export const readAuthorById = async (id: number): Promise<AuthorDetail> => {
 };
 
 export const updateAuthor = async (
-  author: AuthorDetail
+  author: AuthorDetail,
+  userAccount: UserAccount
 ): Promise<AuthorDetail> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}/${author.id}`, {
@@ -100,7 +105,7 @@ export const updateAuthor = async (
       body: JSON.stringify(author),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -119,13 +124,16 @@ export const updateAuthor = async (
   }
 };
 
-export const deleteAuthorById = async (id: number): Promise<boolean> => {
+export const deleteAuthorById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<boolean> => {
   try {
     const response = await fetch(`${AUTHOR_API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "text/plain",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 

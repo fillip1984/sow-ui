@@ -1,9 +1,6 @@
-import { PostDetail, PostSummary } from "../Types";
+import { PostDetail, PostSummary, UserAccount } from "../Types";
 
 const POST_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/posts`;
-// TODO: replace with user principal
-const username = "admin";
-const password = "admin";
 
 export const postKeys = {
   lists: ["post-list"] as const,
@@ -14,14 +11,17 @@ export const postKeys = {
 };
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
-export const createPost = async (post: PostDetail): Promise<PostDetail> => {
+export const createPost = async (
+  post: PostDetail,
+  userAccount: UserAccount
+): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}`, {
       method: "POST",
       body: JSON.stringify(post),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -40,13 +40,17 @@ export const createPost = async (post: PostDetail): Promise<PostDetail> => {
   }
 };
 
-export const readAllPosts = async (q = ""): Promise<PostSummary[]> => {
+export const readAllPosts = async (
+  q = "",
+  userAccount: UserAccount
+): Promise<PostSummary[]> => {
+  console.log(userAccount);
   try {
     const response = await fetch(`${POST_API_URL}?q=${q}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -65,12 +69,15 @@ export const readAllPosts = async (q = ""): Promise<PostSummary[]> => {
   }
 };
 
-export const readPostById = async (id: number): Promise<PostDetail> => {
+export const readPostById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}/${id}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -89,14 +96,17 @@ export const readPostById = async (id: number): Promise<PostDetail> => {
   }
 };
 
-export const updatePost = async (post: PostDetail): Promise<PostDetail> => {
+export const updatePost = async (
+  post: PostDetail,
+  userAccount: UserAccount
+): Promise<PostDetail> => {
   try {
     const response = await fetch(`${POST_API_URL}/${post.id}`, {
       method: "PUT",
       body: JSON.stringify(post),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -115,13 +125,16 @@ export const updatePost = async (post: PostDetail): Promise<PostDetail> => {
   }
 };
 
-export const deletePostById = async (id: number): Promise<boolean> => {
+export const deletePostById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<boolean> => {
   try {
     const response = await fetch(`${POST_API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "text/plain",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 

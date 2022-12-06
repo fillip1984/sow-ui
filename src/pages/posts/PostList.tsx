@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { postKeys, readAllPosts } from "../../services/PostService";
 
 import { DebounceInput } from "react-debounce-input";
 import { FiFilePlus, FiRefreshCw, FiSearch } from "react-icons/fi";
 import PostCard from "../../components/posts/PostCard";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const PostList = () => {
+  const { userAccount } = useContext(AuthContext);
+
   const [filter, setFilter] = useState("");
 
   const {
@@ -15,7 +18,7 @@ const PostList = () => {
     isError,
     isLoading,
     refetch,
-  } = useQuery(postKeys.list(filter), () => readAllPosts(filter));
+  } = useQuery(postKeys.list(filter), () => readAllPosts(filter, userAccount));
 
   return (
     <div className="p-4">

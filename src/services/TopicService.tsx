@@ -1,9 +1,6 @@
-import { TopicDetail, TopicSummary } from "../Types";
+import { TopicDetail, TopicSummary, UserAccount } from "../Types";
 
 const TOPIC_API_URL = `${import.meta.env.VITE_ROOT_API_URL}/topics`;
-// TODO: replace with user principal
-const username = "admin";
-const password = "admin";
 
 export const topicKeys = {
   lists: ["topic-list"] as const,
@@ -15,7 +12,8 @@ export const topicKeys = {
 
 // methods are CRRUD or Create, Read all, Read by id, update, delete
 export const createTopic = async (
-  topicdetail: TopicDetail
+  topicdetail: TopicDetail,
+  userAccount: UserAccount
 ): Promise<TopicDetail> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}`, {
@@ -23,7 +21,7 @@ export const createTopic = async (
       body: JSON.stringify(topicdetail),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -42,13 +40,16 @@ export const createTopic = async (
   }
 };
 
-export const readAllTopics = async (q = ""): Promise<TopicSummary[]> => {
+export const readAllTopics = async (
+  q = "",
+  userAccount: UserAccount
+): Promise<TopicSummary[]> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}?q=${q}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -67,12 +68,15 @@ export const readAllTopics = async (q = ""): Promise<TopicSummary[]> => {
   }
 };
 
-export const readTopicById = async (id: number): Promise<TopicDetail> => {
+export const readTopicById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<TopicDetail> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}/${id}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -91,14 +95,17 @@ export const readTopicById = async (id: number): Promise<TopicDetail> => {
   }
 };
 
-export const updateTopic = async (topic: TopicDetail): Promise<TopicDetail> => {
+export const updateTopic = async (
+  topic: TopicDetail,
+  userAccount: UserAccount
+): Promise<TopicDetail> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}/${topic.id}`, {
       method: "PUT",
       body: JSON.stringify(topic),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 
@@ -117,13 +124,16 @@ export const updateTopic = async (topic: TopicDetail): Promise<TopicDetail> => {
   }
 };
 
-export const deleteTopicById = async (id: number): Promise<boolean> => {
+export const deleteTopicById = async (
+  id: number,
+  userAccount: UserAccount
+): Promise<boolean> => {
   try {
     const response = await fetch(`${TOPIC_API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "text/plain",
-        Authorization: `Basic ${btoa(username + ":" + password)}`,
+        Authorization: `Bearer ${userAccount.token}`,
       },
     });
 

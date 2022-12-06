@@ -24,6 +24,7 @@
   }
 
   input[type="text"],
+  input[type="password"],
   textarea,
   select {
     @apply bg-grey;

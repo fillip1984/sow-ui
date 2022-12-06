@@ -1,3 +1,33 @@
+/////////////
+// security types/interfaces
+/////////////
+export interface UserAccount {
+  username: string;
+  permissions: string[];
+  token: string;
+}
+
+export interface SignInRequest {
+  username: string;
+  password: string;
+}
+
+export interface SignInResponse {
+  status: number;
+  message: string;
+  isSuccess: boolean;
+  userAccount?: UserAccount;
+}
+
+export interface SignUpRequest extends SignInRequest {
+  passwordConfirmation: string;
+}
+
+export type SignUpResponse = SignInResponse;
+
+/////////////
+// data types/interfaces
+/////////////
 export interface Base {
   id: number;
 }
